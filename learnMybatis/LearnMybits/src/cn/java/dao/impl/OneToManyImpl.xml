@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.java.dao.impl.OneToManyImpl">
+
+	<resultMap type="cn.java.entity.Customer" id="Cus">
+		<result property="customerId" javaType="Long" column="customerId"/>
+		<result property="customerName" javaType="String" column="customerName"/>
+		<!-- 当属性是list的时候 -->
+		<collection property="orderList" ofType="cn.java.entity.Orders">
+			<result property="orderId" javaType="Long" column="orderId"/>
+			<result property="orderName" javaType="String" column="orderName"/>
+			<result property="price" javaType="Float" column="price"/>
+			<result property="cusId" javaType="Long" column="cusId"/>
+		</collection>
+	</resultMap>
+
+	<!-- 一对多 -->
+	<select id="oneToMany" resultMap="Cus" parameterType="Long">
+		select * from customer c inner join orders o on c.`coustomerId`=o.`cusId`
+		WHERE c.`coustomerId`=#{0}
+	</select>
+</mapper>

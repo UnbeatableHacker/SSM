@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.java.dao.impl.ComputerImpl">
+	
+	<delete id="delectMore1" parameterType="list">
+		delete from computers where id in 
+		<!-- 
+			foreach标签，对List集合、数组等进行遍历 
+					collection属性：指定遍历集合的类型
+					item属性：零时变量
+					open属性：开始符号
+					separator属性：分割符
+					close属性：借书符号
+		-->
+		<foreach collection="list" item="temp" open="(" separator="," close=")">
+			#{temp}
+		</foreach>
+	</delete>
+	
+	<delete id="delectMore2" parameterType="ArrayList">
+		delete from computers where id in
+		<foreach collection="array" item="temp" open="(" separator="," close=")">
+			#{temp}
+		</foreach>
+	</delete>
+	
+	<select id="dynamicSelect" parameterType="Map" resultType="Map">
+		 select * from computers
+		 <trim prefix="where" prefixOverrides="and">
+		 	<if test="brand!=null and brand!=''"> and brand=#{brand}</if>
+		 	<if test="memory!=null and memory!=''"> and memory=#{memory}</if>
+		 	<if test="system!=null and system!=''"> and system=#{system}</if>
+		 	<if test="price!=null and price!=''"> and price &lt; #{price}</if>
+		 	<if test="cpu!=null and cpu!=''"> and cpu=#{cpu}</if>
+		 </trim>
+	</select>
+	
+	<!-- 插入数据返回主键值 -->
+	<insert id="insertCom1" parameterType="cn.java.entity.Computer" keyProperty="id" useGeneratedKeys="true">
+		insert into computers(brand,memory,system,price,cpu)
+		values (#{brand},#{memory},
+		#{system},#{price},#{cpu})
+	</insert>
+	
+	<insert id="insertCom2" parameterType="Map" keyProperty="id" useGeneratedKeys="true">
+		insert into computers(brand,memory,system,price,cpu)
+		values (#{brand},#{memory},
+		#{system},#{price},#{cpu})
+	</insert>
+</mapper>

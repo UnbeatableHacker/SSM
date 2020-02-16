@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.java.dao.impl.OneToOneImpl">
+	
+	<!-- 处理一对一关系 -->
+	<resultMap type="cn.java.entity.Husband" id="Hus">
+		<!-- 
+			result标签：用来描述一个实体类中的属性
+				property属性：实体类属性名
+				javaType属性：该实体类属性对应的java类型
+				column属性：数据库中的字段名
+				jdbcType属性：数据库中的字段类型
+		 -->
+		<result property="husbandId" javaType="Long" column="husbandId"/>
+		<result property="husName" javaType="String" column="husName"/>
+		<result property="gender" javaType="String" column="gender"/>
+		<result property="husAge" javaType="Integer" column="husAge"/>
+		<result property="wifeId" javaType="Long" column="wifeId"/>
+		<!-- 
+			association标签：用来描述另外一个JavaBean对象
+				property属性：实体类属性名
+				javaType属性：指定实体类的的具体路径
+				column属性：数据库中的字段名
+				jdbcType属性：数据库中的字段类型
+		 -->
+		<association property="wife" javaType="cn.java.entity.Wife">
+			<result property="wifeId" javaType="Long" column="wifeId"/>
+			<result property="wifeName" javaType="String" column="wifeName"/>
+			<result property="sex" javaType="String" column="sex"/>
+			<result property="wifeAge" javaType="Integer" column="wifeAge"/>
+		</association>
+	</resultMap>
+	
+	<!--  -->
+	<select id="oneToOne" resultMap="Hus" parameterType="Long">
+		select * from husband h join wife w on h.`wifeId`= w.`wifeId` 
+		where h.`husbandId`=#{0};
+	</select>
+</mapper>

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.java.dao.impl.CaipinDaoImpl">
+	<!-- resultType只能指定某一条记录的保存类型 -->
+	<!-- 1. 获取所有对象 -->
+	<select id="getAllCaipins" resultType="Map">
+		SELECT * FROM caipin;
+	</select>
+	
+	<!-- 2. 使用map得到单个对象 -->
+	<select id="getOneByMap" resultType="Map">
+		select * from caipin where id=21;
+	</select>
+	
+	<!-- 3. 使用JavaBean获取单个对象 -->
+	<select id="getOneByBean" resultType="Caipin">
+		select * from caipin where id=23;
+	</select>
+	
+	<!-- 4. 有一个参数的查询 -->
+	<select id="selectByMapHaveOneparameter" resultType="Map" parameterType="int">
+		select * from caipin where id=#{0}
+	</select>
+	
+	<!-- 5. 带多个参数 -->
+	<select id="selectByMapHaveManyParameter" resultType="Map" parameterType="Map">
+		select * from caipin where price &gt;= #{minPrice} and price &lt;= #{maxPrice}
+	</select>
+	
+	<!-- 6. JavaBean带多个参数 -->
+	<select id="selectByMapHaveManyParameterByBean" resultType="Map" parameterType="Caipin">
+		select * from caipin where id &gt; #{id} and price &lt; #{price}
+	</select>
+	
+	<!-- 7. 添加记录 -->
+	<insert id="addCaipin" parameterType="Map">
+		insert into caipin set id=#{id},foodName=#{foodName},price=#{price};
+	</insert>
+	
+	<!-- 8. 修改数据 -->
+	<update id="updateCaipin" parameterType="Map">
+		update caipin set price=#{price} where id=#{id}
+	</update>
+	
+	<!-- 9. 删除数据 -->
+	<delete id="deleteByID" parameterType="int">
+		delete from caipin where id=#{0}
+	</delete>
+	
+	<!-- 10. 使用#取值实现$取值的效果 -->
+	<select id="selectAll" resultType="Map" parameterType="String">
+		select * from caipin where description like concat('%',#{0},'%')
+		<!-- CONCAT()函数时sql库函数，作用是将括号内的内容变成字符串 -->
+	</select>
+	
+	<!-- 11. sql标签和 include标签 -->
+	<sql id="commonField">
+		id,foodName,price,description
+	</sql>
+	
+	<select id="getInfoUseSqlAndInclude" resultType="Map" >
+		select <include refid="commonField"/>
+		from caipin
+	</select>
+	
+	<!-- 12. 动态SQL查询 -->
+	<select id="dymanicSelect" resultType="Map" parameterType="Map">
+		select * from computers
+		<where>
+			<if test="brand!=null and brand!=''"> and brand=#{brand}</if>
+			<if test="memory!=null and memory!=''"> and memory=#{memory}</if>
+			<if test="system!=null and system!=''"> and system=#{system}</if>
+			<if test="price!=null and price!=''"> and price &lt; #{price}</if>
+			<if test="cpu!=null and cpu!=''"> and cpu=#{cpu}</if>		
+		</where>
+	</select>
+	
+	<!-- 13. 动态sql更新 -->
+	<update id="dymanicUpdate" parameterType="Map">
+		update computers
+		<set>
+			<if test="brand!=null and brand!=''">brand=#{brand},</if>
+			<if test="memory!=null and memory!=''">memory=#{memory},</if>
+			<if test="system!=null and system!=''">system=#{system},</if>
+			<if test="price!=null and price!=''">price=#{price},</if>
+			<if test="cpu!=null and cpu!=''">cpu=#{cpu},</if>
+			<if test="id!=null and id!=''">id=#{id},</if>
+		</set>
+		where id=#{id}
+	</update>
+</mapper>
