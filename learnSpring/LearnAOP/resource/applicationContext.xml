@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="
+		http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/aop 
+		http://www.springframework.org/schema/aop/spring-aop-2.5.xsd">
+
+
+	<!-- AOP配置：以笔记中的银行举例练习 -->
+    <!-- 将切面交给spring容器来创建对象 -->
+    <bean id="security" class="cn.java.dao.impl.Security"></bean>
+    <bean id="applog" class="cn.java.dao.impl.AppLog"></bean>
+    <bean id="clearResource" class="cn.java.dao.impl.ClearResource"></bean>
+    <bean id="login" class="cn.java.dao.impl.Login"></bean>
+    
+    <!-- 将核心类交给spring容器来创建对象 -->
+    <bean id="appDaoImpl" class="cn.java.dao.impl.AppDaoImpl"></bean>
+    
+    <!-- 开始配置AOP -->
+	<aop:config>
+		<!-- 配置切入点 -->
+		<aop:pointcut expression="execution(* cn.java.dao.impl.AppDaoImpl.*(..))" id="dian"/>
+		<!-- 配置切面 -->
+		<aop:aspect ref="security">
+			<aop:before method="isSecurity" pointcut-ref="dian"/>
+		</aop:aspect>
+		<!-- 配置环绕通知 -->
+		<aop:aspect ref="login">
+			<aop:around method="isLogin" pointcut-ref="dian"/>
+		</aop:aspect>
+		
+		<aop:aspect ref="clearResource">
+			<aop:after method="clear" pointcut-ref="dian"/>
+		</aop:aspect>
+		<aop:aspect ref="applog">
+			<aop:after method="log" pointcut-ref="dian"/>
+		</aop:aspect>
+	</aop:config>
+	
+	<!-- 注解的内容 -->
+	
+</beans>

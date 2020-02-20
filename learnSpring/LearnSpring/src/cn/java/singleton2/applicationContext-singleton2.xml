@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	<!-- 
+		scope属性：指定单例和多例
+			常用值：
+			singleton -> 单例
+			prototype -> 多例
+	 -->
+	<bean id="Duck" class="cn.java.singleton2.Duck" scope="prototype"></bean>
+	
+	
+	<!-- 
+		alias标签：为某一个Bean对象取别名
+			name属性：与bean标签中的id值保持一致
+			alias属性：别名
+	 -->
+	<alias name="Duck" alias="鸭子"/>
+	
+</beans>

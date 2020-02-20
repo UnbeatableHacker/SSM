@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+	
+	
+	<!-- 
+		lazy-init属性：指定框架创建对象的时机
+		常用值：
+			default -> 非懒加载：spring容器启动时立即创建对象
+			false -> 非懒加载
+			true -> 懒加载：使用时创建对象
+	 -->
+	<bean id="Pig" class="cn.java.lazy3.Pig" lazy-init="true"></bean>
+	
+</beans>

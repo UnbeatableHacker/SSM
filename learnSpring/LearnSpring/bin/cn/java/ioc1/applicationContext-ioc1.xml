@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+    <!-- 
+    	bean标签：将需要创建对象的类交给spring容器
+    		class属性：某个的具体路径
+    		id属性：为当前标签取一个标识符
+     -->
+	<bean id="Dog" class="cn.java.ioc1.Dog"></bean>
+	<bean id="Cat" class="cn.java.ioc1.Cat"></bean>
+	
+</beans>
